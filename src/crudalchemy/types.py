@@ -4,33 +4,29 @@
 
 from __future__ import annotations
 
-from typing import Protocol, TypeVar, List, Iterable, Sequence
+from abc import ABC, abstractmethod
+from typing import Protocol, TypeVar, List, Iterable, Sequence, Generic
 
 T = TypeVar("T")
 
 
-class DataSource(Protocol[T]):
-
+class DataSource(ABC, Generic[T]):
+    @abstractmethod
     def load(self) -> List[T]:
         pass
 
 
-class DataSourceBuilder(Protocol[T]):
-
+class DataSourceBuilder(ABC, Generic[T]):
+    @abstractmethod
     def build(self) -> DataSource[T]:
         pass
 
 
-class DataSink(Protocol[T]):
-
+class DataSink(ABC, Generic[T]):
+    @abstractmethod
     def save(self, items: Iterable[T]) -> None:
         pass
 
+    @abstractmethod
     def delete(self, items: Iterable[T]) -> None:
-        pass
-
-
-class ExtraAction(Protocol[T]):
-
-    def process(self, items: Sequence[T]) -> None:
         pass

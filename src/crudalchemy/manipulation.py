@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from typing import Generic, List, Iterable, Optional, Callable
+from typing import Generic, List, Iterable, Optional, Callable, Any
 
 from .types import T, DataSource, DataSink
 
@@ -24,26 +24,37 @@ class Manipulator(Generic[T]):
     def __iter__(self):
         return iter(self._items)
 
-    def add_new(self):
-        pass
+    def __len__(self) -> int:
+        return len(self._items)
 
-    def extend(self):
-        pass
+    def append_new(self) -> None:
+        """Append new item to manipulator.
 
-    def update(self):
-        pass
+        Only further operations will affect the new item.
+        """
+        self._items.append(self._item_factory())
+
+    def extend(self, items: Iterable[T]) -> None:
+        """Append many items from given param to the managed items."""
+        self._items.extend(items)
+
+    def set_property(self, key: str, val: Any):
+        """Set property value on all managed items"""
+        for item in self._items:
+            setattr(item, key, val)
+
+    def save(self):
+        self._sink.save(self._items)
 
     def delete(self):
-        pass
+        self._sink.delete(self._items)
 
-    def for_each(self):
-        pass
+    def for_each(self, callback: Callable[[T], None]):
+        for item in self._items:
+            callback(item)
 
-    def map(self):
-        pass
+    def filter(self, filter_fn: Callable[[T], bool]):
+        self._items = list(filter(filter_fn, self._items))
 
-    def filter(self):
-        pass
-
-    def sort(self):
-        pass
+    def sort(self, compare_fn: Callable[[T, T], int]):
+        self._items.sort(key=compare_fn)

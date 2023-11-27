@@ -4,9 +4,9 @@
 
 from __future__ import annotations
 
-from typing import Generic, List, Iterable, Optional, Callable, Any
+from typing import Generic, Iterable, Optional, Callable, Any
 
-from .types import T, DataSource, DataSink
+from .abstraction import T, DataSource, DataSink
 
 
 class Manipulator(Generic[T]):

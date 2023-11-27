@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import Iterable
 
-from crudalchemy.types import DataSink, T
+from crudalchemy.abstraction import DataSink, T
 
 
 class DummySink(DataSink):

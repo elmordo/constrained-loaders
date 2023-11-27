@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import List
 
-from crudalchemy.types import DataSource, T
+from crudalchemy.abstraction import DataSource, T
 
 
 class DummySource(DataSource[T]):

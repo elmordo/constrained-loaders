@@ -1,11 +1,11 @@
 [project]
-name = "crud-alchemy"
+name = "datmodif"
 version = "0.0.0"
 dependencies = [
 ]
 
 [tool.setuptools]
-package-dir = {"" = "src"}
+package-dir = { "" = "src" }
 
 [build-system]
 requires = ["setuptools"]

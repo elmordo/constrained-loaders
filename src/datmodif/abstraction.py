@@ -9,7 +9,6 @@ from dataclasses import dataclass
 from enum import auto
 from typing import (
     TypeVar,
-    List,
     Iterable,
     Generic,
     Any,
@@ -112,9 +111,12 @@ class DataSource(ABC, Generic[T]):
     """Base class for all data sources."""
 
     @abstractmethod
-    def load(self) -> List[T]:
-        """Get all data from data source."""
-        pass
+    def __next__(self) -> T:
+        """Iterate over"""
+
+    @abstractmethod
+    def __len__(self) -> int:
+        """Get total count of items available in the loader"""
 
 
 class DataSourceBuilder(ABC, Generic[T]):
@@ -145,7 +147,7 @@ class MutableDataSourceBuilder(ABC, Generic[T]):
 
     @abstractmethod
     def set_offset(self, offset: int):
-        """Set offset in rowset where to start."""
+        """Set offset in row set where to start."""
         pass
 
     @abstractmethod

@@ -9,7 +9,6 @@ from dataclasses import dataclass
 from enum import auto
 from typing import (
     TypeVar,
-    Iterable,
     Generic,
     Any,
     Optional,
@@ -159,17 +158,3 @@ class MutableDataSourceBuilder(ABC, Generic[T]):
         """Shorthand for calling `set_offset` and `set_limit` method when using pagination."""
         self.set_limit(items_per_page)
         self.set_offset(page * items_per_page)
-
-
-class DataSink(ABC, Generic[T]):
-    """Modify a data storage."""
-
-    @abstractmethod
-    def save(self, items: Iterable[T]) -> None:
-        """Save items to the storage."""
-        pass
-
-    @abstractmethod
-    def delete(self, items: Iterable[T]) -> None:
-        """Delete items from the storage."""
-        pass

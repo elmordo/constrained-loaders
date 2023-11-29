@@ -85,7 +85,7 @@ class DefaultSort:
         return cls(sort)
 
 
-class DataSourceSpec(Generic[Q]):
+class LoaderSpec(Generic[Q]):
     """Specification of available filters and sorts for loader."""
 
     sortable_fields: Mapping[str, QuerySort[Q]]
@@ -106,7 +106,7 @@ class DataSourceSpec(Generic[Q]):
     """The key is extension name and value is extension itself."""
 
 
-class DataSource(ABC, Generic[T]):
+class Loader(ABC, Generic[T]):
     """Base class for all data sources."""
 
     @abstractmethod
@@ -118,16 +118,16 @@ class DataSource(ABC, Generic[T]):
         """Get total count of items available in the loader"""
 
 
-class DataSourceBuilder(ABC, Generic[T]):
+class LoaderBuilder(ABC, Generic[T]):
     """Create instances of the data sources."""
 
     @abstractmethod
-    def build(self) -> DataSource[T]:
+    def build(self) -> Loader[T]:
         """Build new `DataSource` instance."""
         pass
 
 
-class MutableDataSourceBuilder(ABC, Generic[T]):
+class ConfigurableLoaderBuilder(ABC, Generic[T]):
     """Extend the `DataSourceBuilder` by build configuration methods."""
 
     @abstractmethod

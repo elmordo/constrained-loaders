@@ -1,11 +1,11 @@
 [project]
-name = "datmodif"
+name = "constrained_loaders"
 version = "0.0.0"
 dependencies = [
 ]
 
 [tool.setuptools]
-package-dir = { "datmodif" = "src/datmodif" }
+package-dir = { "constrained_loaders" = "src/constrained_loaders" }
 
 [build-system]
 requires = ["setuptools"]

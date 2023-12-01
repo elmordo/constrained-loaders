@@ -27,9 +27,3 @@ class FilterNotFound(ConstrainedLoadersException, LookupError, KeyError):
     """Raised when filter was not found."""
 
     pass
-
-
-class FieldNotDefined(ConstrainedLoadersException, LookupError, KeyError):
-    """Raised when field was not found (e.g. no filter is defined for the field)."""
-
-    pass

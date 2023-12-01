@@ -127,34 +127,51 @@ class LoaderBuilder(ABC, Generic[T]):
         pass
 
 
-class ConfigurableLoaderBuilder(ABC, Generic[T]):
+class ConfigurableLoaderBuilder(LoaderBuilder, ABC, Generic[T]):
     """Extend the `DataSourceBuilder` by build configuration methods."""
+
+    @abstractmethod
+    def apply_extension(self, extension_name: str) -> None:
+        """Manually apply extension to the query.
+
+        Raises:
+            ExtensionNotFound: There is no extension of given name
+        """
+        pass
 
     @abstractmethod
     def add_sort(
         self, field: str, direction: SortDirection, options: Optional[Any] = None
     ):
-        """Add sort requirement to the configuration."""
+        """Add sort requirement to the configuration.
+
+        Raises:
+            ExtensionNotFound: There is no sort definition for the field of given name
+        """
         pass
 
     @abstractmethod
     def add_filter(
         self, field: str, operator: str, reference_value: Optional[Any] = None
-    ):
-        """Add filter requirement to the configuration."""
+    ) -> None:
+        """Add filter requirement to the configuration.
+
+        Raises:
+            ExtensionNotFound: There is no filter definition for the field of given name supporting given operator.
+        """
         pass
 
     @abstractmethod
-    def set_offset(self, offset: int):
+    def set_offset(self, offset: int) -> None:
         """Set offset in row set where to start."""
         pass
 
     @abstractmethod
-    def set_limit(self, limit: int):
+    def set_limit(self, limit: int) -> None:
         """Set max number of items to be returned."""
         pass
 
-    def set_page(self, page: int, items_per_page: int):
+    def set_page(self, page: int, items_per_page: int) -> None:
         """Shorthand for calling `set_offset` and `set_limit` method when using pagination."""
         self.set_limit(items_per_page)
         self.set_offset(page * items_per_page)

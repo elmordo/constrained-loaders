@@ -21,6 +21,6 @@ gbol = [
     "lgbt",
 ]
 
-sqlalchemy = [
+sa = [
     "sqlalchemy>=2.0,<3.0"
 ]

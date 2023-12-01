@@ -4,11 +4,12 @@
 
 from __future__ import annotations
 
-from typing import List
-
-from crudalchemy.abstraction import DataSource, T
+from constrained_loaders.abstraction import Loader, T
 
 
-class DummySource(DataSource[T]):
-    def load(self) -> List[T]:
+class DummyLoader(Loader[T]):
+    def __next__(self) -> T:
         return []
+
+    def __len__(self) -> int:
+        return 0

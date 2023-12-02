@@ -15,7 +15,7 @@ from constrained_loaders.abstraction import (
     QuerySort,
     SortDirection,
     QueryFilter,
-    LoaderExtension,
+    QueryExtension,
 )
 from constrained_loaders.loader_builders import LoaderBuilderBase
 
@@ -64,7 +64,7 @@ class SampleFilter(QueryFilter[List]):
         return query
 
 
-class SampleExtension(LoaderExtension[List]):
+class SampleExtension(QueryExtension[List]):
     def __init__(self, name, requirements=None):
         super().__init__(requirements)
         self.name = name

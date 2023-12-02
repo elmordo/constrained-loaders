@@ -46,7 +46,7 @@ class LoaderSpecPiece:
         return self._required_extensions
 
 
-class LoaderExtension(LoaderSpecPiece, ABC, Generic[Q]):
+class QueryExtension(LoaderSpecPiece, ABC, Generic[Q]):
     """Represent loader extension (e.g. joins etc)."""
 
     @abstractmethod
@@ -105,7 +105,7 @@ class LoaderSpec(Generic[Q]):
     instance of the `QueryFilter`.
     """
 
-    extensions: Sequence[str, LoaderExtension[Q]]
+    extensions: Sequence[str, QueryExtension[Q]]
     """The key is extension name and value is extension itself."""
 
     def clone(self) -> LoaderSpec[Q]:

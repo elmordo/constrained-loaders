@@ -17,6 +17,11 @@ from constrained_loaders.abstraction import (
     QueryFilter,
     QueryExtension,
 )
+from constrained_loaders.exceptions import (
+    SortNotFound,
+    ExtensionNotFound,
+    FilterNotFound,
+)
 from constrained_loaders.loader_builders import LoaderBuilderBase
 
 
@@ -80,7 +85,30 @@ def test_add_filter(builder, query, field, operator, reference_value, expected_r
     ],
 )
 def test_add_extension(builder, query, extension, expected_result):
-    pass
+    builder.apply_extension(extension)
+    assert query == expected_result
+
+
+def test_add_invalid_sort(builder):
+    with pytest.raises(SortNotFound):
+        builder.add_sort("foo", SortDirection.ASC)
+
+
+@pytest.mark.parametrize(
+    "field, operator",
+    [
+        ["foo", "bar"],
+        ["id", "bar"],
+    ],
+)
+def test_add_invalid_filter(builder, field, operator):
+    with pytest.raises(FilterNotFound):
+        builder.add_filter(field, operator, 1)
+
+
+def test_add_invalid_extension(builder):
+    with pytest.raises(ExtensionNotFound):
+        builder.apply_extension("foo")
 
 
 @pytest.fixture()

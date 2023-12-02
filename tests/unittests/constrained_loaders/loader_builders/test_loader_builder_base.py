@@ -20,6 +20,79 @@ from constrained_loaders.abstraction import (
 from constrained_loaders.loader_builders import LoaderBuilderBase
 
 
+@pytest.mark.parametrize(
+    "field, direction, expected_result",
+    [
+        (
+            "id",
+            SortDirection.ASC,
+            [("sort", ("id", SortDirection.ASC))],
+        ),
+        (
+            "name",
+            SortDirection.ASC,
+            [("extension", "ext1"), ("sort", ("name", SortDirection.ASC))],
+        ),
+    ],
+)
+def test_add_sort(builder, query, field, direction: SortDirection, expected_result):
+    builder.add_sort(field, direction)
+    assert query == expected_result
+
+
+@pytest.mark.parametrize(
+    "field, operator, reference_value, expected_result",
+    [
+        (
+            "id",
+            "eq",
+            12,
+            [("filter", ("id_eq", 12))],
+        ),
+        (
+            "address",
+            "like",
+            "some town 666",
+            [
+                ("extension", "ext3"),
+                ("extension", "ext2"),
+                ("filter", ("address_like", "some town 666")),
+            ],
+        ),
+    ],
+)
+def test_add_filter(builder, query, field, operator, reference_value, expected_result):
+    builder.add_filter(field, operator, reference_value)
+    assert query == expected_result
+
+
+@pytest.mark.parametrize(
+    "extension, expected_result",
+    [
+        ("ext1", [("extension", "ext1")]),
+        (
+            "ext2",
+            [
+                ("extension", "ext3"),
+                ("extension", "ext2"),
+            ],
+        ),
+    ],
+)
+def test_add_extension(builder, query, extension, expected_result):
+    pass
+
+
+@pytest.fixture()
+def builder(spec, query) -> SampleLoaderBuilder:
+    return SampleLoaderBuilder(spec, query)
+
+
+@pytest.fixture()
+def query() -> List:
+    return []
+
+
 @pytest.fixture()
 def spec() -> LoaderSpec:
     return LoaderSpec(
@@ -33,7 +106,7 @@ def spec() -> LoaderSpec:
                 "eq": SampleFilter("id_eq"),
             },
             "address": {
-                "like": SampleFilter("address_like", "ext2"),
+                "like": SampleFilter("address_like", ["ext2"]),
             },
         },
         extensions={
@@ -50,7 +123,7 @@ class SampleSort(QuerySort[List]):
         self.name = name
 
     def apply_sorting(self, query: List, direction: SortDirection) -> List:
-        query.append(("sort", self.name))
+        query.append(("sort", (self.name, direction)))
         return query
 
 

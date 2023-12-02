@@ -104,7 +104,7 @@ class LoaderSpec(Generic[Q]):
     instance of the `QueryFilter`.
     """
 
-    extensions: Sequence[str, QueryExtension[Q]]
+    extensions: Mapping[str, QueryExtension[Q]]
     """The key is extension name and value is extension itself."""
 
     def clone(self) -> LoaderSpec[Q]:
@@ -115,7 +115,7 @@ class LoaderSpec(Generic[Q]):
                 field: dict(filters)
                 for field, filters in self.filterable_fields.items()
             },
-            extensions=list(self.extensions),
+            extensions=dict(self.extensions),
         )
 
 

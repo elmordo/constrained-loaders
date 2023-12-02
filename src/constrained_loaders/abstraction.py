@@ -12,7 +12,6 @@ from typing import (
     Generic,
     Any,
     Optional,
-    Self,
     Mapping,
     Sequence,
     Iterable,
@@ -82,7 +81,7 @@ class DefaultSort:
     """Direction of sort."""
 
     @classmethod
-    def from_string(cls, sort: str) -> Self:
+    def from_string(cls, sort: str) -> DefaultSort:
         """Create instance from name of the sort field."""
         return cls(sort)
 

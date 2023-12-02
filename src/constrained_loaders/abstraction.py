@@ -15,6 +15,7 @@ from typing import (
     Self,
     Mapping,
     Sequence,
+    Iterable,
 )
 
 T = TypeVar("T")
@@ -37,11 +38,12 @@ class SortDirection:
 class LoaderSpecPiece:
     """Represent piece of loader spec. Each loader piece have list of its requirement."""
 
-    @abstractmethod
+    def __init__(self, required_extensions: Optional[Iterable[str]] = None):
+        self._required_extensions = list(required_extensions or [])
+
     @property
-    def required_extensions(self) -> list[str]:
-        """List of required extensions for this piece."""
-        pass
+    def required_extensions(self) -> Sequence[str]:
+        return self._required_extensions
 
 
 class LoaderExtension(LoaderSpecPiece, ABC, Generic[Q]):

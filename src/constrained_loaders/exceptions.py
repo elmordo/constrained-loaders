@@ -11,19 +11,19 @@ class ConstrainedLoadersException(Exception):
     pass
 
 
-class ExtensionNotFound(ConstrainedLoadersException, LookupError, KeyError):
+class ExtensionNotFound(ConstrainedLoadersException, KeyError):
     """Raised when extension was not found."""
 
     pass
 
 
-class SortNotFound(ConstrainedLoadersException, LookupError, KeyError):
+class SortNotFound(ConstrainedLoadersException, KeyError):
     """Raised when query sort was not found."""
 
     pass
 
 
-class FilterNotFound(ConstrainedLoadersException, LookupError, KeyError):
+class FilterNotFound(ConstrainedLoadersException, KeyError):
     """Raised when filter was not found."""
 
     pass

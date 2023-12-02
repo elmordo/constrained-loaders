@@ -21,8 +21,8 @@ from constrained_loaders.exceptions import (
 )
 
 
-class DataSourceBuilderBase(ConfigurableLoaderBuilder[T], ABC, Generic[T, Q]):
-    """Base class for most data source builders. Provide system independent logic."""
+class LoaderBuilderBase(ConfigurableLoaderBuilder[T], ABC, Generic[T, Q]):
+    """Base class for most loader builders. Provide system independent logic."""
 
     def __init__(self, spec: LoaderSpec[Q], bare_query: Q):
         """Initialize the library
@@ -43,7 +43,7 @@ class DataSourceBuilderBase(ConfigurableLoaderBuilder[T], ABC, Generic[T, Q]):
 
     def apply_extension(self, extension_name: str) -> None:
         if extension_name in self._applied_extensions:
-            # do not apply extension twirce
+            # do not apply extension twice
             return
         try:
             extension = self._spec.extensions[extension_name]

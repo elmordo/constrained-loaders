@@ -18,9 +18,9 @@ from typing import (
 )
 
 T = TypeVar("T")
-"""Item type returned from a data source."""
+"""Item type returned from a loader."""
 Q = TypeVar("Q")
-"""Query type internally used by a data source."""
+"""Query type internally used by a loader."""
 
 
 class SortDirection:
@@ -107,7 +107,7 @@ class LoaderSpec(Generic[Q]):
 
 
 class Loader(ABC, Generic[T]):
-    """Base class for all data sources."""
+    """Base class for all loaders."""
 
     @abstractmethod
     def __next__(self) -> T:
@@ -119,16 +119,16 @@ class Loader(ABC, Generic[T]):
 
 
 class LoaderBuilder(ABC, Generic[T]):
-    """Create instances of the data sources."""
+    """Create instances of data loaders."""
 
     @abstractmethod
     def build(self) -> Loader[T]:
-        """Build new `DataSource` instance."""
+        """Build new `Loader` instance."""
         pass
 
 
 class ConfigurableLoaderBuilder(LoaderBuilder, ABC, Generic[T]):
-    """Extend the `DataSourceBuilder` by build configuration methods."""
+    """Extend the `LoaderBuilder` by build configuration methods."""
 
     @abstractmethod
     def apply_extension(self, extension_name: str) -> None:

@@ -85,13 +85,14 @@ class DefaultSort:
         return cls(sort)
 
 
+@dataclass()
 class LoaderSpec(Generic[Q]):
     """Specification of available filters and sorts for loader."""
 
     sortable_fields: Mapping[str, QuerySort[Q]]
     """The key is field name and value is sort definition."""
 
-    default_sort_by: Sequence[str | DefaultSort]
+    default_sort_by: Sequence[DefaultSort]
     """List of sorts used if no other sorts are specified."""
 
     filterable_fields: Mapping[str, Mapping[str, QueryFilter[Q]]]
@@ -102,8 +103,19 @@ class LoaderSpec(Generic[Q]):
     instance of the `QueryFilter`.
     """
 
-    extensions: Mapping[str, LoaderExtension[Q]]
+    extensions: Sequence[str, LoaderExtension[Q]]
     """The key is extension name and value is extension itself."""
+
+    def clone(self) -> LoaderSpec[Q]:
+        return LoaderSpec(
+            sortable_fields=dict(self.sortable_fields),
+            default_sort_by=list(self.default_sort_by),
+            filterable_fields={
+                field: dict(filters)
+                for field, filters in self.filterable_fields.items()
+            },
+            extensions=list(self.extensions),
+        )
 
 
 class Loader(ABC, Generic[T]):

@@ -8,7 +8,7 @@ from typing import List, Optional, Any
 
 import pytest
 
-from constrained_loaders.abstraction import (
+from constrained_loaders import (
     Loader,
     T,
     LoaderSpec,
@@ -16,13 +16,11 @@ from constrained_loaders.abstraction import (
     SortDirection,
     QueryFilter,
     QueryExtension,
-)
-from constrained_loaders.exceptions import (
     SortNotFound,
-    ExtensionNotFound,
     FilterNotFound,
+    LoaderBuilderBase,
+    ExtensionNotFound,
 )
-from constrained_loaders.loader_builders import LoaderBuilderBase
 
 
 @pytest.mark.parametrize(

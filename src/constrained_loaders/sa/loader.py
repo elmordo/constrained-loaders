@@ -4,19 +4,21 @@
 
 from __future__ import annotations
 
+from typing import Iterable, Generic
+
 from sqlalchemy import Select, select as select_, func
 from sqlalchemy.orm import Session
 
 from constrained_loaders import Loader, T
 
 
-class SALoader(Loader):
+class SALoader(Loader[T], Generic[T]):
     def __init__(self, select: Select, session: Session):
         self._select: Select = select
         self._session: Session = session
 
-    def __next__(self) -> T:
-        pass
+    def __iter__(self) -> Iterable[T]:
+        return self._session.scalars(self._select)
 
     def __len__(self) -> int:
         s = select_(func.count()).select_from(self._select.subquery())

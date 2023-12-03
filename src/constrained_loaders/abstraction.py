@@ -124,18 +124,11 @@ class Loader(ABC, Generic[T]):
 
     @abstractmethod
     def __iter__(self) -> Iterable[T]:
-        """Return iterator for loaded data.
-
-        The data is cached. To invalidate and reload fresh data use the `invalidate()` method.
-        """
+        """Return iterator for loaded data. The loaded data are always fresh."""
 
     @abstractmethod
     def __len__(self) -> int:
         """Get total count of items available in the loader"""
-
-    @abstractmethod
-    def invalidate(self) -> None:
-        """Invalidate internal items cache"""
 
 
 class LoaderBuilder(ABC, Generic[T]):

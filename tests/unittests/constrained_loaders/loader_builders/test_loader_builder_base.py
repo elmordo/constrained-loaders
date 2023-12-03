@@ -39,8 +39,10 @@ from constrained_loaders import (
     ],
 )
 def test_add_sort(builder, query, field, direction: SortDirection, expected_result):
+    assert builder.is_any_sort_applied is False
     builder.add_sort(field, direction)
     assert query == expected_result
+    assert builder.is_any_sort_applied is True
 
 
 @pytest.mark.parametrize(
@@ -88,8 +90,10 @@ def test_add_extension(builder, query, extension, expected_result):
 
 
 def test_add_invalid_sort(builder):
+    assert builder.is_any_sort_applied is False
     with pytest.raises(SortNotFound):
         builder.add_sort("foo", SortDirection.ASC)
+    assert builder.is_any_sort_applied is False
 
 
 @pytest.mark.parametrize(

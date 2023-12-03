@@ -41,6 +41,10 @@ class LoaderBuilderBase(ConfigurableLoaderBuilder[T], ABC, Generic[T, Q]):
         """Get the loader spec"""
         return self._spec
 
+    @property
+    def is_any_sort_applied(self) -> bool:
+        return self._sort_applied
+
     def apply_extension(self, extension_name: str) -> None:
         if extension_name in self._applied_extensions:
             # do not apply extension twice

@@ -18,7 +18,7 @@ class BuiltQuery:
         raise NotImplementedError()
 
 
-class SAComplexLoaderBuilder(LoaderBuilderBase[T, BuiltQuery], Generic[T]):
+class SALoaderBuilder(LoaderBuilderBase[T, BuiltQuery], Generic[T]):
     def __init__(
         self, spec: LoaderSpec[BuiltQuery], bare_query: BuiltQuery, session: Session
     ):

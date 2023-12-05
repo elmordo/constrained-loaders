@@ -11,7 +11,7 @@ from constrained_loaders.abstraction import (
     T,
     ConfigurableLoaderBuilder,
     LoaderSpec,
-    Q,
+    C,
     SortDirection,
 )
 from constrained_loaders.exceptions import (
@@ -21,23 +21,23 @@ from constrained_loaders.exceptions import (
 )
 
 
-class LoaderBuilderBase(ConfigurableLoaderBuilder[T], ABC, Generic[T, Q]):
+class LoaderBuilderBase(ConfigurableLoaderBuilder[T], ABC, Generic[T, C]):
     """Base class for most loader builders. Provide system independent logic."""
 
-    def __init__(self, spec: LoaderSpec[Q], bare_query: Q):
+    def __init__(self, spec: LoaderSpec[C], bare_query: C):
         """Initialize the library
 
         Args:
             spec: the loader spec
             bare_query: query without any constraints
         """
-        self._spec: LoaderSpec[Q] = spec
+        self._spec: LoaderSpec[C] = spec
         self._query = bare_query
         self._applied_extensions: Set[str] = set()
         self._sort_applied = False
 
     @property
-    def loader_spec(self) -> LoaderSpec[Q]:
+    def loader_spec(self) -> LoaderSpec[C]:
         """Get the loader spec"""
         return self._spec
 

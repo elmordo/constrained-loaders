@@ -67,14 +67,14 @@ class SALoaderBuilder(LoaderBuilderBase[T, SALoaderBuilderContext], Generic[T]):
 
 class SAQuerySort(QuerySort[SALoaderBuilderContext]):
     def apply_sorting(
-        self, query: SALoaderBuilderContext, direction: SortDirection
+        self, context: SALoaderBuilderContext, direction: SortDirection
     ) -> SALoaderBuilderContext:
         pass
 
 
 class SAQueryFilter(QueryFilter[SALoaderBuilderContext]):
     def apply_filter(
-        self, query: SALoaderBuilderContext, reference_value: Optional[Any]
+        self, context: SALoaderBuilderContext, reference_value: Optional[Any]
     ) -> SALoaderBuilderContext:
         pass
 
@@ -85,10 +85,12 @@ class SAJoinExtension(QueryExtension[SALoaderBuilderContext]):
         self._join_to = join_to
         self._sub_query_name = sub_query_name
 
-    def apply_extension(self, query: SALoaderBuilderContext) -> SALoaderBuilderContext:
+    def apply_extension(
+        self, context: SALoaderBuilderContext
+    ) -> SALoaderBuilderContext:
         if self._sub_query_name is None:
-            query.main_query = query.main_query.join(self._join_to)
+            context.main_query = context.main_query.join(self._join_to)
         else:
-            q = query.sub_queries[self._sub_query_name]
-            query.sub_queries[self._sub_query_name] = q.join(self._join_to)
-        return query
+            q = context.sub_queries[self._sub_query_name]
+            context.sub_queries[self._sub_query_name] = q.join(self._join_to)
+        return context

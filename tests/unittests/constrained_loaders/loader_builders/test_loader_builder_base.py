@@ -152,9 +152,9 @@ class SampleSort(QuerySort[List]):
         super().__init__(extensions)
         self.name = name
 
-    def apply_sorting(self, query: List, direction: SortDirection) -> List:
-        query.append(("sort", (self.name, direction)))
-        return query
+    def apply_sorting(self, context: List, direction: SortDirection) -> List:
+        context.append(("sort", (self.name, direction)))
+        return context
 
 
 class SampleFilter(QueryFilter[List]):
@@ -162,9 +162,9 @@ class SampleFilter(QueryFilter[List]):
         super().__init__(extensions)
         self.name = name
 
-    def apply_filter(self, query: List, reference_value: Optional[Any]) -> List:
-        query.append(("filter", (self.name, reference_value)))
-        return query
+    def apply_filter(self, context: List, reference_value: Optional[Any]) -> List:
+        context.append(("filter", (self.name, reference_value)))
+        return context
 
 
 class SampleExtension(QueryExtension[List]):
@@ -172,9 +172,9 @@ class SampleExtension(QueryExtension[List]):
         super().__init__(requirements)
         self.name = name
 
-    def apply_extension(self, query: List) -> List:
-        query.append(("extension", self.name))
-        return query
+    def apply_extension(self, context: List) -> List:
+        context.append(("extension", self.name))
+        return context
 
 
 class SampleLoaderBuilder(LoaderBuilderBase):

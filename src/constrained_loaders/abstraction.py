@@ -19,7 +19,7 @@ from typing import (
 
 T = TypeVar("T")
 """Item type returned from a loader."""
-Q = TypeVar("Q")
+C = TypeVar("Q")
 """Query type internally used by a loader."""
 
 
@@ -45,29 +45,29 @@ class LoaderSpecPiece:
         return self._required_extensions
 
 
-class QueryExtension(LoaderSpecPiece, ABC, Generic[Q]):
+class QueryExtension(LoaderSpecPiece, ABC, Generic[C]):
     """Represent loader extension (e.g. joins etc)."""
 
     @abstractmethod
-    def apply_extension(self, query: Q) -> Q:
+    def apply_extension(self, context: C) -> C:
         """Apply the extension to the `query`."""
         pass
 
 
-class QueryFilter(LoaderSpecPiece, ABC, Generic[Q]):
+class QueryFilter(LoaderSpecPiece, ABC, Generic[C]):
     """Apply filtration condition(s) to a query."""
 
     @abstractmethod
-    def apply_filter(self, query: Q, reference_value: Optional[Any]) -> Q:
+    def apply_filter(self, context: C, reference_value: Optional[Any]) -> C:
         """Apply the filtration condition specified by instance to the `query`."""
         pass
 
 
-class QuerySort(LoaderSpecPiece, ABC, Generic[Q]):
+class QuerySort(LoaderSpecPiece, ABC, Generic[C]):
     """Apply sorting to a query."""
 
     @abstractmethod
-    def apply_sorting(self, query: Q, direction: SortDirection) -> Q:
+    def apply_sorting(self, context: C, direction: SortDirection) -> C:
         """Apply sorting to the `query`."""
         pass
 
@@ -87,16 +87,16 @@ class DefaultSort:
 
 
 @dataclass()
-class LoaderSpec(Generic[Q]):
+class LoaderSpec(Generic[C]):
     """Specification of available filters and sorts for loader."""
 
-    sortable_fields: Mapping[str, QuerySort[Q]]
+    sortable_fields: Mapping[str, QuerySort[C]]
     """The key is field name and value is sort definition."""
 
     default_sort_by: Sequence[DefaultSort]
     """List of sorts used if no other sorts are specified."""
 
-    filterable_fields: Mapping[str, Mapping[str, QueryFilter[Q]]]
+    filterable_fields: Mapping[str, Mapping[str, QueryFilter[C]]]
     """Contain two nested mappings:
     
     The top level mapping is mapping from the field name (key) to lookup of operators (values).
@@ -104,10 +104,10 @@ class LoaderSpec(Generic[Q]):
     instance of the `QueryFilter`.
     """
 
-    extensions: Mapping[str, QueryExtension[Q]]
+    extensions: Mapping[str, QueryExtension[C]]
     """The key is extension name and value is extension itself."""
 
-    def clone(self) -> LoaderSpec[Q]:
+    def clone(self) -> LoaderSpec[C]:
         return LoaderSpec(
             sortable_fields=dict(self.sortable_fields),
             default_sort_by=list(self.default_sort_by),

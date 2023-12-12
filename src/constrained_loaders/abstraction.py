@@ -5,7 +5,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field as field_
 from enum import auto
 from typing import (
     TypeVar,
@@ -19,7 +19,7 @@ from typing import (
 
 T = TypeVar("T")
 """Item type returned from a loader."""
-C = TypeVar("Q")
+C = TypeVar("C")
 """Query type internally used by a loader."""
 
 
@@ -90,13 +90,13 @@ class DefaultSort:
 class LoaderSpec(Generic[C]):
     """Specification of available filters and sorts for loader."""
 
-    sortable_fields: Mapping[str, QuerySort[C]] = field(default=dict)
+    sortable_fields: Mapping[str, QuerySort[C]] = field_(default=dict)
     """The key is field name and value is sort definition."""
 
-    default_sort_by: Sequence[DefaultSort] = field(default=list)
+    default_sort_by: Sequence[DefaultSort] = field_(default=list)
     """List of sorts used if no other sorts are specified."""
 
-    filterable_fields: Mapping[str, Mapping[str, QueryFilter[C]]] = field(default=dict)
+    filterable_fields: Mapping[str, Mapping[str, QueryFilter[C]]] = field_(default=dict)
     """Contain two nested mappings:
     
     The top level mapping is mapping from the field name (key) to lookup of operators (values).
@@ -104,7 +104,7 @@ class LoaderSpec(Generic[C]):
     instance of the `QueryFilter`.
     """
 
-    extensions: Mapping[str, QueryExtension[C]] = field(default=dict)
+    extensions: Mapping[str, QueryExtension[C]] = field_(default=dict)
     """The key is extension name and value is extension itself."""
 
     def clone(self) -> LoaderSpec[C]:

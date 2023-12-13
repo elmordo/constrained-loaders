@@ -4,19 +4,19 @@
 
 from __future__ import annotations
 
-from typing import Generic, Optional
+from typing import Generic, Optional, TypeVar
 
 from sqlalchemy.orm import Session
 
 from constrained_loaders import (
     LoaderBuilderBase,
-    T,
     LoaderSpec,
     InvalidBuilderConfigurationException,
 )
 from constrained_loaders.sa.context import SALoaderBuilderContext
 from constrained_loaders.sa.loader import SALoader
 
+T = TypeVar("T")
 SALoaderSpec = LoaderSpec[SALoaderBuilderContext]
 
 

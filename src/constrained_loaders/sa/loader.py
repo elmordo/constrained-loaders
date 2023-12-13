@@ -4,12 +4,14 @@
 
 from __future__ import annotations
 
-from typing import Iterable, Generic
+from typing import Iterable, Generic, TypeVar
 
 from sqlalchemy import Select, select as select_, func
 from sqlalchemy.orm import Session
 
-from constrained_loaders import Loader, T
+from constrained_loaders import Loader
+
+T = TypeVar("T")
 
 
 class SALoader(Loader[T], Generic[T]):

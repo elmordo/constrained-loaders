@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import functools
 from typing import Iterable, Optional
 
 from constrained_loaders import QuerySort, SortDirection
@@ -20,10 +21,10 @@ class SAQuerySort(QuerySort[SALoaderBuilderContext]):
     def apply_sorting(
         self, context: SALoaderBuilderContext, direction: SortDirection
     ) -> SALoaderBuilderContext:
-        context.add_sort(lambda c: self._apply_sorting_to_query(c, direction))
+        context.add_sort(functools.partial(self._modify_query, direction=direction))
         return context
 
-    def _apply_sorting_to_query(
+    def _modify_query(
         self, context: SALoaderBuilderContext, direction: SortDirection
     ) -> None:
         if direction is SortDirection.ASC:

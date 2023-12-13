@@ -24,13 +24,9 @@ class SAJoinExtension(QueryExtension[SALoaderBuilderContext]):
         self._sub_query_name = sub_query_name
 
     def __call__(self, context: SALoaderBuilderContext) -> None:
-        if self._sub_query_name is None:
-            context.main_query = context.main_query.join(self._join_to, self._on_clause)
-        else:
-            sq = self._sub_query_name
-            context.sub_queries[sq] = context.sub_queries[sq].join(
-                self._join_to, self._on_clause
-            )
+        context.apply_callback_to_query(
+            self._sub_query_name, lambda s: s.join(self._join_to, self._on_clause)
+        )
 
     def apply_extension(
         self, context: SALoaderBuilderContext

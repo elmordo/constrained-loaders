@@ -36,9 +36,4 @@ class SAQuerySort(QuerySort[SALoaderBuilderContext]):
         else:
             raise ValueError(f"Invalid sort direction: {direction}")
 
-        if self._sub_query_name is None:
-            context.main_query = context.main_query.order_by(o)
-        else:
-            context.sub_queries[self._sub_query_name] = context.sub_queries[
-                self._sub_query_name
-            ].order_by(o)
+        context.apply_callback_to_query(self._sub_query_name, lambda s: s.order_by(o))

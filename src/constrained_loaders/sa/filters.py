@@ -30,3 +30,4 @@ class SAQueryFilter(QueryFilter[SALoaderBuilderContext]):
         self, context: SALoaderBuilderContext, reference_value: Optional[Any]
     ):
         clause = self._clause_factory(reference_value)
+        context.apply_callback_to_query(self._sub_query_name, lambda s: s.where(clause))

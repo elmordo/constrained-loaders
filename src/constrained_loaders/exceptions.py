@@ -27,3 +27,9 @@ class FilterNotFound(ConstrainedLoadersException, KeyError):
     """Raised when filter was not found."""
 
     pass
+
+
+class InvalidBuilderConfigurationException(ConstrainedLoadersException):
+    """Raised from LoaderBuilder.build() method in case of invalid configuration (some fields are missing, etc.)"""
+
+    pass

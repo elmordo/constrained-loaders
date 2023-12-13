@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Dict, Protocol, List
+from typing import Dict, Protocol, List, Callable
 
 from sqlalchemy import Select
 
@@ -27,6 +27,14 @@ class SALoaderBuilderContext:
         self._apply_filters()
         self._apply_sorts()
         return self.main_query
+
+    def apply_callback_to_query(
+        self, query_name: str | None, callback: Callable[[Select], Select]
+    ):
+        if query_name is None:
+            self.main_query = callback(self.main_query)
+        else:
+            self.sub_queries[query_name] = callback(self.sub_queries[query_name])
 
     def _apply_extensions(self):
         for e in self._extensions:
